@@ -36,8 +36,18 @@ export class TripService {
     });
   }
 
-  findAll() {
-    return this.prisma.trip.findMany({});
+  findAll(query: UpdateTripDto) {
+    const { startDate, endDate, destination } = query;
+
+    const where = {} as any;
+
+    if (startDate) where.startDate = { gte: new Date(startDate) };
+    if (endDate) where.endDate = { lte: new Date(endDate) };
+    if (destination) where.destination = { contains: destination };
+
+    return this.prisma.trip.findMany({
+      where,
+    });
   }
 
   findOne(id: string) {

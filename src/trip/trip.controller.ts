@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TripService } from './trip.service';
 import { CreateTripDto } from './dto/create-trip.dto';
@@ -19,6 +20,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { TripEntity } from './entities/trip.entity';
 
 @Controller('trip')
 @ApiTags('trip')
@@ -28,7 +30,7 @@ export class TripController {
   @Post()
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
-  @ApiCreatedResponse({ type: CreateTripDto })
+  @ApiCreatedResponse({ type: TripEntity })
   create(@Body() createTripDto: CreateTripDto) {
     return this.tripService.create(createTripDto);
   }
@@ -36,15 +38,15 @@ export class TripController {
   @Get()
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: [CreateTripDto] })
-  findAll() {
-    return this.tripService.findAll();
+  @ApiOkResponse({ type: [TripEntity] })
+  findAll(@Query() query: UpdateTripDto) {
+    return this.tripService.findAll(query);
   }
 
   @Get('user/:userId')
   @UseGuards(LoginGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: [CreateTripDto] })
+  @ApiOkResponse({ type: [TripEntity] })
   findByUser(@Param('userId') userId: string) {
     return this.tripService.findByUser(userId);
   }
@@ -52,7 +54,7 @@ export class TripController {
   @Get(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: CreateTripDto })
+  @ApiOkResponse({ type: TripEntity })
   findOne(@Param('id') id: string) {
     return this.tripService.findOne(id);
   }
@@ -60,7 +62,7 @@ export class TripController {
   @Patch(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: CreateTripDto })
+  @ApiOkResponse({ type: TripEntity })
   update(@Param('id') id: string, @Body() updateTripDto: UpdateTripDto) {
     return this.tripService.update(id, updateTripDto);
   }
@@ -68,7 +70,7 @@ export class TripController {
   @Delete(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: CreateTripDto })
+  @ApiOkResponse({ type: TripEntity })
   remove(@Param('id') id: string) {
     return this.tripService.remove(id);
   }

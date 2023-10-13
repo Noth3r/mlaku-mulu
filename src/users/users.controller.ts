@@ -13,7 +13,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginGuard } from 'src/auth/guard/login/login.guard';
 import { AdminGuard } from 'src/auth/guard/admin/admin.guard';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
@@ -30,6 +35,7 @@ export class UsersController {
   @Get()
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({ type: [UserEntity] })
   findAll() {
     return this.usersService.findAll();
   }
@@ -37,6 +43,7 @@ export class UsersController {
   @Get(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
@@ -44,6 +51,7 @@ export class UsersController {
   @Patch(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
@@ -51,6 +59,7 @@ export class UsersController {
   @Delete(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }

@@ -16,7 +16,6 @@ export class TripEntity implements Trip {
   endDate: Date;
   @ApiProperty()
   price: number;
-  @ApiProperty()
   @Exclude()
   userId: string;
 }
