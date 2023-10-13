@@ -31,47 +31,49 @@ export class TripController {
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: TripEntity })
-  create(@Body() createTripDto: CreateTripDto) {
-    return this.tripService.create(createTripDto);
+  async create(@Body() createTripDto: CreateTripDto) {
+    return new TripEntity(await this.tripService.create(createTripDto));
   }
 
   @Get()
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: [TripEntity] })
-  findAll(@Query() query: UpdateTripDto) {
-    return this.tripService.findAll(query);
+  async findAll(@Query() query: UpdateTripDto) {
+    const trip = await this.tripService.findAll(query);
+    return trip.map((trip) => new TripEntity(trip));
   }
 
   @Get('user/:userId')
   @UseGuards(LoginGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: [TripEntity] })
-  findByUser(@Param('userId') userId: string) {
-    return this.tripService.findByUser(userId);
+  async findByUser(@Param('userId') userId: string) {
+    const trip = await this.tripService.findByUser(userId);
+    return trip.map((trip) => new TripEntity(trip));
   }
 
   @Get(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: TripEntity })
-  findOne(@Param('id') id: string) {
-    return this.tripService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new TripEntity(await this.tripService.findOne(id));
   }
 
   @Patch(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: TripEntity })
-  update(@Param('id') id: string, @Body() updateTripDto: UpdateTripDto) {
-    return this.tripService.update(id, updateTripDto);
+  async update(@Param('id') id: string, @Body() updateTripDto: UpdateTripDto) {
+    return new TripEntity(await this.tripService.update(id, updateTripDto));
   }
 
   @Delete(':id')
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: TripEntity })
-  remove(@Param('id') id: string) {
-    return this.tripService.remove(id);
+  async remove(@Param('id') id: string) {
+    return new TripEntity(await this.tripService.remove(id));
   }
 }
