@@ -27,6 +27,6 @@ model Trip {
   endDate     DateTime
   destination String
   price       Int
-  User        User?    @relation(fields: [userId], references: [id])
+  User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String?
 }
