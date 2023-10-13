@@ -9,9 +9,10 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
 
   const config = new DocumentBuilder()
-    .setTitle('Median')
-    .setDescription('The Median API description')
+    .setTitle('Mlaku-Mulu')
+    .setDescription('The Mlaku-Mulu API description')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

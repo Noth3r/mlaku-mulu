@@ -18,6 +18,7 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { TripEntity } from './entities/trip.entity';
@@ -39,6 +40,9 @@ export class TripController {
   @UseGuards(LoginGuard, AdminGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: [TripEntity] })
+  @ApiQuery({ name: 'startDate', required: false })
+  @ApiQuery({ name: 'endDate', required: false })
+  @ApiQuery({ name: 'destination', required: false })
   async findAll(@Query() query: UpdateTripDto) {
     const trip = await this.tripService.findAll(query);
     return trip.map((trip) => new TripEntity(trip));
